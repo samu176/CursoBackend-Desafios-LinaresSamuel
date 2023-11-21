@@ -16,15 +16,7 @@ class ProductManager {
         return;
         }
 
-        const newProduct = {
-        id: this.nextId++,
-        title,
-        description,
-        price,
-        thumbnail,
-        code,
-        stock
-        };
+        const newProduct = { id: this.nextId++, title, description, price, thumbnail, code, stock };
         this.products.push(newProduct);
         console.log("Producto agregado:", newProduct);
     }
