@@ -1,0 +1,22 @@
+{
+  "name": "desafios",
+  "version": "1.0.0",
+  "description": "desafios del curso de backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samu176/CursoBackend-Desafios-LinaresSamuel.git"
+  },
+  "author": "Samuel Linares",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samu176/CursoBackend-Desafios-LinaresSamuel/issues"
+  },
+  "homepage": "https://github.com/samu176/CursoBackend-Desafios-LinaresSamuel#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
