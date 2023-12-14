@@ -21,63 +21,14 @@ class ProductManager {
         }
     }
 
-    saveProducts() {
-        try {
-            fs.writeFileSync(this.path, JSON.stringify(this.products, null, 2));
-        } catch (error) {
-            console.error('Error en editar:', error.message);
-        }
+
+    addNewProduct(productData) {
     }
 
-    addProduct(product) {
-        const { title, description, price, thumbnail, code, stock } = product;
-        const newProduct = {
-            id: this.nextId++,
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock
-        };
-        this.products.push(newProduct);
-        this.saveProducts();
-        console.log('Producto agregado:', newProduct);
+    updateProduct(productId, updatedData) {
     }
 
-    getProducts() {
-        return this.products;
-    }
-
-    getProductById(id) {
-        const product = this.products.find(product => product.id === id);
-        if (!product) {
-            console.log('No encontrado');
-            return null;
-        }
-        return product;
-    }
-
-    updateProduct(id, updatedFields) {
-        const index = this.products.findIndex(product => product.id === id);
-        if (index !== -1) {
-            this.products[index] = { ...this.products[index], ...updatedFields };
-            this.saveProducts();
-            console.log('Producto actualizado:', this.products[index]);
-        } else {
-            console.log('Producto no encontrado');
-        }
-    }
-
-    deleteProduct(id) {
-        const index = this.products.findIndex(product => product.id === id);
-        if (index !== -1) {
-            this.products.splice(index, 1);
-            this.saveProducts();
-            console.log('Producto eliminado');
-        } else {
-            console.log('Producto no encontrado');
-        }
+    deleteProduct(productId) {
     }
 }
 

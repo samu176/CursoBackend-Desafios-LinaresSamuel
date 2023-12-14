@@ -1,13 +1,12 @@
 const express = require('express');
-const ProductManager = require('./productmanager'); 
+const ProductManager = require('./productmanager');
 
 const app = express();
 const PORT = 8080;
 
-const productManager = new ProductManager('datos.json'); 
+const productManager = new ProductManager('datos.json');
 
-
-app.get('/products', async (req, res) => {
+app.get('/api/products', async (req, res) => {
     try {
         const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
         let products = productManager.getProducts();
@@ -20,8 +19,7 @@ app.get('/products', async (req, res) => {
     }
 });
 
-
-app.get('/products/:pid', async (req, res) => {
+app.get('/api/products/:pid', async (req, res) => {
     try {
         const productId = parseInt(req.params.pid);
         const product = productManager.getProductById(productId);
@@ -34,7 +32,6 @@ app.get('/products/:pid', async (req, res) => {
         res.status(500).json({ error: 'Error del servidor' });
     }
 });
-
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
