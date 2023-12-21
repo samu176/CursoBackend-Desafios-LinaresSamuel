@@ -21,6 +21,13 @@ class ProductManager {
         }
     }
 
+    saveProducts() {
+        try {
+            fs.writeFileSync(this.path, JSON.stringify(this.products, null, 2));
+        } catch (error) {
+            console.error('Error en editar:', error.message);
+        }
+    }
 
     addNewProduct(productData) {
     }

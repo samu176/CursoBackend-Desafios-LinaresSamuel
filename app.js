@@ -33,6 +33,27 @@ app.get('/api/products/:pid', async (req, res) => {
     }
 });
 
+app.post('/api/carts', async (req, res) => {
+    try {
+    } catch (error) {
+        res.status(500).json({ error: 'Error del servidor' });
+    }
+});
+
+app.get('/api/carts/:cid', async (req, res) => {
+    try {
+    } catch (error) {
+        res.status(500).json({ error: 'Error del servidor' });
+    }
+});
+
+app.post('/api/carts/:cid/product/:pid', async (req, res) => {
+    try {
+    } catch (error) {
+        res.status(500).json({ error: 'Error del servidor' });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
