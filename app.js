@@ -7,41 +7,27 @@ const path = require('path');
 const productRoutes = require('./router/productRoutes');
 const cartRoutes = require('./router/cartRoutes');
 const messageRoutes = require('./router/messageRoutes');
+const mongoConnect = require('./db/mongoConnect');
 
-const connectionString = 'mongodb+srv://admin:admin@cluster0.afvs2wp.mongodb.net/?retryWrites=true&w=majority';
-
-mongoose.connect(connectionString, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'Error de conexión a MongoDB:'));
-db.once('open', () => {
-  console.log('Conexión a MongoDB Atlas establecida');
-});
+mongoConnect();
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-
-const hbs = exphbs.create({ extname: '.handlebars', layoutsDir: __dirname + '/views/layouts/' });
+const hbs = exphbs.create({ extname: '.handlebars', layoutsDir: path.join(__dirname, 'views/layouts') });
 
 app.engine('.handlebars', hbs.engine);
 app.set('view engine', '.handlebars');
-
+app.set('views', path.join(__dirname, 'views'));
 
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
 app.use('/api/messages', messageRoutes);
 
-
 app.get('/chat', (req, res) => {
   res.render('chat');
 });
-
 
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
