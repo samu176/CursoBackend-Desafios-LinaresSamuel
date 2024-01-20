@@ -26,21 +26,22 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const hbs = exphbs.create({ extname: '.hbs' });
-app.engine('.hbs', hbs.engine);
-app.set('view engine', '.hbs');
 
-// Establecer la ruta completa del directorio de vistas
-const viewsPath = path.join(__dirname, 'views');
-app.set('views', viewsPath);
+const hbs = exphbs.create({ extname: '.handlebars', layoutsDir: __dirname + '/views/layouts/' });
+
+app.engine('.handlebars', hbs.engine);
+app.set('view engine', '.handlebars');
+
 
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
 app.use('/api/messages', messageRoutes);
 
+
 app.get('/chat', (req, res) => {
   res.render('chat');
 });
+
 
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
