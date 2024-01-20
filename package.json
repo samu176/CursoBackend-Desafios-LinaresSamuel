@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/samu176/CursoBackend-Desafios-LinaresSamuel#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.1.0",
+    "socket.io": "^4.7.2"
   }
 }

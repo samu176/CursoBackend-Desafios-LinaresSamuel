@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #messages {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Chat</h1>
+  <div id="messages"></div>
+  <form id="messageForm">
+    <label for="userInput">Nombre:</label>
+    <input type="text" id="userInput" required>
+    <label for="messageInput">Mensaje:</label>
+    <input type="text" id="messageInput" required>
+    <button type="submit">Enviar</button>
+  </form>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    const messagesContainer = document.getElementById('messages');
+    const messageForm = document.getElementById('messageForm');
+    const userInput = document.getElementById('userInput');
+    const messageInput = document.getElementById('messageInput');
+
+    messageForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const user = userInput.value.trim();
+      const message = messageInput.value.trim();
+
+      if (user && message) {
+        socket.emit('message', { user, message });
+        messageInput.value = '';
+      }
+    });
+
+    socket.on('message', (data) => {
+      const messageElement = document.createElement('div');
+      messageElement.innerHTML = `<strong>${data.user}:</strong> ${data.message}`;
+      messagesContainer.appendChild(messageElement);
+    });
+  </script>
+</body>
+</html>

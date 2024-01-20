@@ -1,59 +1,60 @@
 const express = require('express');
-const ProductManager = require('./productmanager');
+const http = require('http');
+const socketIo = require('socket.io');
+const mongoose = require('mongoose');
+const exphbs = require('express-handlebars');
+const path = require('path');
+const productRoutes = require('./router/productRoutes');
+const cartRoutes = require('./router/cartRoutes');
+const messageRoutes = require('./router/messageRoutes');
+
+const connectionString = 'mongodb+srv://admin:admin@cluster0.afvs2wp.mongodb.net/?retryWrites=true&w=majority';
+
+mongoose.connect(connectionString, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'Error de conexión a MongoDB:'));
+db.once('open', () => {
+  console.log('Conexión a MongoDB Atlas establecida');
+});
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+const hbs = exphbs.create({ extname: '.hbs' });
+app.engine('.hbs', hbs.engine);
+app.set('view engine', '.hbs');
+
+// Establecer la ruta completa del directorio de vistas
+const viewsPath = path.join(__dirname, 'views');
+app.set('views', viewsPath);
+
+app.use('/api/products', productRoutes);
+app.use('/api/carts', cartRoutes);
+app.use('/api/messages', messageRoutes);
+
+app.get('/chat', (req, res) => {
+  res.render('chat');
+});
+
+io.on('connection', (socket) => {
+  console.log('Nuevo cliente conectado');
+
+  socket.on('message', async (data) => {
+    try {
+      io.emit('message', data);
+    } catch (error) {
+      console.error('Error al procesar el mensaje:', error.message);
+    }
+  });
+});
+
 const PORT = 8080;
-
-const productManager = new ProductManager('datos.json');
-
-app.get('/api/products', async (req, res) => {
-    try {
-        const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
-        let products = productManager.getProducts();
-        if (limit) {
-            products = products.slice(0, limit);
-        }
-        res.json(products);
-    } catch (error) {
-        res.status(500).json({ error: 'Error del servidor' });
-    }
-});
-
-app.get('/api/products/:pid', async (req, res) => {
-    try {
-        const productId = parseInt(req.params.pid);
-        const product = productManager.getProductById(productId);
-        if (!product) {
-            res.status(404).json({ error: 'Producto no encontrado' });
-            return;
-        }
-        res.json(product);
-    } catch (error) {
-        res.status(500).json({ error: 'Error del servidor' });
-    }
-});
-
-app.post('/api/carts', async (req, res) => {
-    try {
-    } catch (error) {
-        res.status(500).json({ error: 'Error del servidor' });
-    }
-});
-
-app.get('/api/carts/:cid', async (req, res) => {
-    try {
-    } catch (error) {
-        res.status(500).json({ error: 'Error del servidor' });
-    }
-});
-
-app.post('/api/carts/:cid/product/:pid', async (req, res) => {
-    try {
-    } catch (error) {
-        res.status(500).json({ error: 'Error del servidor' });
-    }
-});
-
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
