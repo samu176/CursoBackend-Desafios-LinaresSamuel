@@ -8,6 +8,7 @@ const productRoutes = require('./router/productRoutes');
 const cartRoutes = require('./router/cartRoutes');
 const messageRoutes = require('./router/messageRoutes');
 const mongoConnect = require('./db/mongoConnect');
+const MessageManager = require('./dao/messageManager');
 
 mongoConnect();
 
@@ -20,6 +21,8 @@ const hbs = exphbs.create({ extname: '.handlebars', layoutsDir: path.join(__dirn
 app.engine('.handlebars', hbs.engine);
 app.set('view engine', '.handlebars');
 app.set('views', path.join(__dirname, 'views'));
+
+const messageManager = new MessageManager(io);
 
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
@@ -34,7 +37,7 @@ io.on('connection', (socket) => {
 
   socket.on('message', async (data) => {
     try {
-      io.emit('message', data);
+      messageManager.io.emit('message', data);
     } catch (error) {
       console.error('Error al procesar el mensaje:', error.message);
     }
