@@ -16,17 +16,32 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const hbs = exphbs.create({ extname: '.handlebars', layoutsDir: path.join(__dirname, 'views/layouts') });
+const hbs = exphbs.create({
+  extname: '.handlebars',
+  layoutsDir: path.join(__dirname, 'views/layouts'), 
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  },
+});
 
 app.engine('.handlebars', hbs.engine);
 app.set('view engine', '.handlebars');
 app.set('views', path.join(__dirname, 'views'));
+
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const messageManager = new MessageManager(io);
 
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
 app.use('/api/messages', messageRoutes);
+
+app.get('/home', (req, res) => {
+  res.render('home');
+});
 
 app.get('/chat', (req, res) => {
   res.render('chat');

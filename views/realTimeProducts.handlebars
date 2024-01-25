@@ -1,21 +1,32 @@
-<h1>Listado de Productos en Tiempo Real</h1>
-<ul id="product-list">
-  {{#each products}}
-    <li>{{this.title}} - Precio: {{this.price}} - Stock: {{this.stock}}</li>
-  {{/each}}
-</ul>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listado de Productos en Tiempo Real</title>
+</head>
+<body>
+  <h1>Listado de Productos en Tiempo Real</h1>
+  <ul id="product-list">
+    {{#each products}}
+      <li>{{this.title}} - Precio: {{this.price}} - Stock: {{this.stock}}</li>
+    {{/each}}
+  </ul>
 
-<!--Formulario-->
-<form id="product-form">
-  <label for="productName">Nombre del Producto:</label>
-  <input type="text" id="productName" name="productName">
+  <form id="product-form">
+    <label for="productName">Nombre del Producto:</label>
+    <input type="text" id="productName" name="productName">
 
-  <label for="productPrice">Precio:</label>
-  <input type="text" id="productPrice" name="productPrice">
+    <label for="productPrice">Precio:</label>
+    <input type="text" id="productPrice" name="productPrice">
 
-  <label for="productStock">Stock:</label>
-  <input type="text" id="productStock" name="productStock">
+    <label for="productStock">Stock:</label>
+    <input type="text" id="productStock" name="productStock">
 
-  <button id="addProductBtn">Agregar Producto</button>
-  <button id="deleteProductBtn">Eliminar Producto</button>
-</form>
+    <button id="addProductBtn">Agregar Producto</button>
+    <button id="deleteProductBtn">Eliminar Producto</button>
+  </form>
+
+
+</body>
+</html>

@@ -4,7 +4,16 @@ const ProductManager = require('../dao/productManager');
 
 const productManager = new ProductManager();
 
-router.get('/', async (req, res) => {
+router.get('/home', async (req, res) => {
+  try {
+    const products = await productManager.getProducts();
+    res.render('home', { products });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/api/products', async (req, res) => {
   try {
     const products = await productManager.getProducts();
     res.status(200).json(products);
@@ -13,7 +22,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:productId', async (req, res) => {
+router.get('/api/products/:productId', async (req, res) => {
   try {
     const product = await productManager.getProductById(req.params.productId);
     res.status(200).json(product);
@@ -22,8 +31,7 @@ router.get('/:productId', async (req, res) => {
   }
 });
 
-
-router.post('/', async (req, res) => {
+router.post('/api/products', async (req, res) => {
   try {
     console.log('Request Body:', req.body);
     const newProduct = await productManager.addNewProduct(req.body);
@@ -33,9 +41,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-
-
-router.put('/:productId', async (req, res) => {
+router.put('/api/products/:productId', async (req, res) => {
   try {
     const updatedProduct = await productManager.updateProduct(req.params.productId, req.body);
     res.status(200).json(updatedProduct);
@@ -44,8 +50,7 @@ router.put('/:productId', async (req, res) => {
   }
 });
 
-
-router.delete('/:productId', async (req, res) => {
+router.delete('/api/products/:productId', async (req, res) => {
   try {
     const result = await productManager.deleteProduct(req.params.productId);
     res.status(200).json(result);
